@@ -1,0 +1,32 @@
+#Tomcat installlation
+---
+- hosts: dev
+  become: yes
+
+  tasks:
+  - name: install java
+    yum:
+      name: java-1.8.0-openjdk-devel
+      state: present
+ 
+  - name: install wget
+    yum:
+      name: wget
+      state: present
+
+  - name: grabing wget
+    get_url:
+      url: https://www-eu.apache.org/dist/tomcat/tomcat-9/v9.0.27/bin/apache-tomcat-9.0.27.tar.gz
+      dest: /usr/local
+
+  - name: zip wget
+    unarchive:
+      src: /usr/local/apache-tomcat-9.0.27.tar.gz
+      dest: /usr/local
+      remote_src: yes
+
+ # - name: Move tomcat
+  # command: mv /usr/local/apache-tomcat-9.0.27  /usr/local/tomcat9
+
+  - name: Start tomcat
+    command: nohup /usr/local/apache-tomcat-9.0.27/bin/startup.sh
